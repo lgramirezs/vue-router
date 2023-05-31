@@ -73,7 +73,7 @@ const nextDisabled = computed(() => {
                     <tr v-for="(pokemon,index) in data.results.slice(start,end)" :key="index">
                         <td><RouterLink class="text-decoration-none text-success" :to="`/pokemones/${pokemon.name}`">{{ pokemon.name }}</RouterLink> </td>
                         <td><a class="text-success" :href="pokemon.url" target="_blank">{{ pokemon.url.substr(8) }}</a></td>
-                        <td><RouterLink class="btn btn-outline-success btn-sm" :to="`/pokemones/${pokemon.name}`">See more</RouterLink> </td>
+                        <td><RouterLink class="btn btn-outline-success btn-sm" :to="`/pokemones/${pokemon.name}`">Ver</RouterLink> </td>
                     </tr>
                 </tbody>
             </table>
@@ -81,8 +81,8 @@ const nextDisabled = computed(() => {
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="btn-group w-50" role="group" aria-label="buttons">
-                      <button @click="prev" type="button" class="btn btn-success" :disabled="prevDisabled">Previous</button>
-                      <button @click="next" type="button" class="btn btn-success" :disabled="nextDisabled">Next</button>
+                      <button @click="prev" type="button" class="btn btn-success" :disabled="prevDisabled">Anterior</button>
+                      <button @click="next" type="button" class="btn btn-success" :disabled="nextDisabled">Siguiente</button>
                     </div>
                 </div>
             </div>

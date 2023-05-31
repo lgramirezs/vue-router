@@ -1,30 +1,34 @@
 <script setup>
 // import axios from 'axios';
 // import {ref} from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import {useRoute} from 'vue-router';
 import {useGetData} from '@/composables/getData';
+import { useGoBack } from '@/composables/goBack';
+import { useFavoriteStore } from '@/store/favorites'
+import { ref, watchEffect } from 'vue';
+import { storeToRefs } from 'pinia';
 
+const disabled = ref(false) 
+
+//store
+const useFavorite = useFavoriteStore()
+const { addFavorite} = useFavorite
+const { favorites } = storeToRefs(useFavorite)
+
+
+//composable
 const { getData, data ,loading } = useGetData()
-
-const route = useRoute();
-const router = useRouter();
-
-const returnBack = () => {
-    router.push('/');
-} 
-
-// const getpokemon = async() => {
-//     try {
-//         const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${route.params.pokename}`)
-//         pokemon.value = data;
-//     } catch (error) {
-//         console.log(error)
-//     } finally {
-//         loading.value = false;
-//     }
-// }
+const {goBack} = useGoBack()
+const route = useRoute()
 
 getData(`https://pokeapi.co/api/v2/pokemon/${route.params.pokename}`)
+
+watchEffect(() => {
+    const duplicateItems = favorites.value.filter(favorite => favorite.name == route.params.pokename);
+    if (duplicateItems.length > 0) {
+        disabled.value = true
+    }
+})
 
 
 </script>
@@ -51,7 +55,8 @@ getData(`https://pokeapi.co/api/v2/pokemon/${route.params.pokename}`)
               </div>
             </div>
             <div class="card-footer bg-transparent border-success">
-                <button class="btn btn-success active" @click="returnBack()">Regresar</button>
+                <button class="btn btn-sm btn-success me-2" @click="goBack">Regresar</button>
+                <button :disabled="disabled" class="btn btn-sm btn-primary" @click="addFavorite(data)">Agregar a favoritos</button>
             </div>
         </div>
     </div>
